@@ -76,7 +76,7 @@ import openpyxl
 # ══════════════════════════════════════════════════════════════════════
 # CONSTANTS
 # ══════════════════════════════════════════════════════════════════════
-APP_TITLE = "Exam Data Reporting Portal — Portal Merge (Final)"
+APP_TITLE = "Exam Portal Data Processing, Validation & Reporting System"
 XLSX_MIME = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 
 # Hard Excel per-sheet row cap is 1,048,576 including the header row.
