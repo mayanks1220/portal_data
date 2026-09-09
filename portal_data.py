@@ -1405,3 +1405,5 @@ def render_portal_merge_final():
 if __name__ == "__main__":
     _configure_page()
     render_portal_merge_final()
+  st.write("Made by Vikrant Kumar")
+
