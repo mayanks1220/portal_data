@@ -1067,7 +1067,7 @@ def render_portal_merge_final():
             type=["xlsx"], accept_multiple_files=True, key="pmf_files",
         )
     with c2:
-        skip_rows = st.number_input("Header rows to skip", min_value=0, max_value=20, value=5, step=1, key="pmf_skip")
+        skip_rows = st.number_input("Header rows to skip(Note: It will remove from all files and tab)", min_value=0, max_value=20, value=5, step=1, key="pmf_skip")
 
     # ── 2. Formatting (Roll No AND Centre Code padding) ─────────────────
     st.markdown('<div class="sec-title">2 · Roll Number & Centre Code Formatting</div>', unsafe_allow_html=True)
