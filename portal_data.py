@@ -1360,46 +1360,46 @@ def render_portal_merge_final():
             st.caption("Pick at least one shift above to enable this download.")
 
     # ── Suggestions ──────────────────────────────────────────────────────
-    with st.expander("💡 Suggestions before rolling this into module1_portal.py"):
-        st.markdown(
-            """
-- **Promote shared pieces into `utils.py` first.** Centre Code padding, the
-  tab-level audit, the final shift-level cross-check, `make_sheet_name`, and
-  `build_grouped_workbook` are all generic enough to be used by every module
-  (1, 2, 4, 5), not just Portal. Moving them into `utils.py` once (instead of
-  copy-pasting into `module1_portal.py`) means one fix applies everywhere,
-  same as the rest of the app already does.
-- **Make the row-cap-per-tab a shared constant** (e.g. `utils.MAX_ROWS_PER_TAB`)
-  so every module's shift-wise/whole-data export uses the same default and you
-  only tune it in one place if Excel's limit or your infra changes.
-- **Progress bar caveat:** the bars here reflect *server-side* file generation
-  only — Streamlit can't hook into the browser's actual download-transfer
-  progress, since the file is already fully built in memory before the
-  download button appears. That said, for 25L+ row exports the generation
-  step itself can take real time, so the bar is still meaningful.
-- **Sample fixture files** — before wiring this into production, it's worth
-  keeping 2–3 small sample workbooks (one old one-file-per-shift, one new
-  multi-tab, one with a deliberately corrupted sheet) as a quick regression
-  check whenever this logic changes.
-- **Write speed, resolved:** benchmarked 4 approaches on 300,000 rows —
-  `xlsxwriter`'s `constant_memory` option was ~2x faster than plain
-  pandas+xlsxwriter, but proven (via round-trip test) to silently corrupt
-  row 0 of every sheet when combined with pandas' `to_excel()`. **openpyxl's
-  write-only mode with `ws.append()`** (used everywhere in this file now)
-  came out fastest of all AND correct, with no xlsxwriter dependency needed.
-- **Please also check `utils.py`'s `df_to_excel_bytes`** (used across every
-  other module) and `module_portal_merge_test.py`'s `build_shiftwise_multitab_excel`
-  — both still enable `xlsxwriter`'s `constant_memory` option above ~100,000
-  rows and are likely hitting the identical row-0 corruption bug on any large
-  export today. Worth porting the openpyxl write-only approach from this file
-  into `utils.py` before anything else rolls into production, since the bug
-  fails silently (dropped data) rather than raising an error.
-- **Column aliasing:** if new source files start naming Device / BioDevice /
-  Bio Count / Operator differently, add the new spelling to `ALIASES` here
-  (and to `utils.ALIAS_MAP` once merged) rather than special-casing it in the
-  page code.
-            """
-        )
+#     with st.expander("💡 Suggestions before rolling this into module1_portal.py"):
+#         st.markdown(
+#             """
+# - **Promote shared pieces into `utils.py` first.** Centre Code padding, the
+#   tab-level audit, the final shift-level cross-check, `make_sheet_name`, and
+#   `build_grouped_workbook` are all generic enough to be used by every module
+#   (1, 2, 4, 5), not just Portal. Moving them into `utils.py` once (instead of
+#   copy-pasting into `module1_portal.py`) means one fix applies everywhere,
+#   same as the rest of the app already does.
+# - **Make the row-cap-per-tab a shared constant** (e.g. `utils.MAX_ROWS_PER_TAB`)
+#   so every module's shift-wise/whole-data export uses the same default and you
+#   only tune it in one place if Excel's limit or your infra changes.
+# - **Progress bar caveat:** the bars here reflect *server-side* file generation
+#   only — Streamlit can't hook into the browser's actual download-transfer
+#   progress, since the file is already fully built in memory before the
+#   download button appears. That said, for 25L+ row exports the generation
+#   step itself can take real time, so the bar is still meaningful.
+# - **Sample fixture files** — before wiring this into production, it's worth
+#   keeping 2–3 small sample workbooks (one old one-file-per-shift, one new
+#   multi-tab, one with a deliberately corrupted sheet) as a quick regression
+#   check whenever this logic changes.
+# - **Write speed, resolved:** benchmarked 4 approaches on 300,000 rows —
+#   `xlsxwriter`'s `constant_memory` option was ~2x faster than plain
+#   pandas+xlsxwriter, but proven (via round-trip test) to silently corrupt
+#   row 0 of every sheet when combined with pandas' `to_excel()`. **openpyxl's
+#   write-only mode with `ws.append()`** (used everywhere in this file now)
+#   came out fastest of all AND correct, with no xlsxwriter dependency needed.
+# - **Please also check `utils.py`'s `df_to_excel_bytes`** (used across every
+#   other module) and `module_portal_merge_test.py`'s `build_shiftwise_multitab_excel`
+#   — both still enable `xlsxwriter`'s `constant_memory` option above ~100,000
+#   rows and are likely hitting the identical row-0 corruption bug on any large
+#   export today. Worth porting the openpyxl write-only approach from this file
+#   into `utils.py` before anything else rolls into production, since the bug
+#   fails silently (dropped data) rather than raising an error.
+# - **Column aliasing:** if new source files start naming Device / BioDevice /
+#   Bio Count / Operator differently, add the new spelling to `ALIASES` here
+#   (and to `utils.ALIAS_MAP` once merged) rather than special-casing it in the
+#   page code.
+#             """
+#         )
 
 
 if __name__ == "__main__":
